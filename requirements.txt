@@ -1,7 +1,9 @@
+# Your current requirements.txt should look like this:
 flask==3.0.3
 flask-cors==4.0.0
-ultralytics==8.2.0
 opencv-python-headless==4.9.0.80
-numpy==1.26.4
-gunicorn==22.0.0
+ultralytics==8.4.95  # <-- ADD THIS LINE
 huggingface_hub==0.22.2
+gunicorn==22.0.0
+torch==2.13.0
+torchvision==0.28.0
