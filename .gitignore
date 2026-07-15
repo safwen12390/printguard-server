@@ -1,4 +1,8 @@
 __pycache__/
+*.pt
+*.pth
+*.weights
+venv/
 *.pyc
 *.pyo
 *.pyd
