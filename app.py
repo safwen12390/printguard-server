@@ -7,17 +7,23 @@ from flask_cors import CORS
 from ultralytics import YOLO
 from huggingface_hub import hf_hub_download
 import torch
+import torch.nn.modules.container  # <-- ADDED THIS IMPORT
 import ultralytics.nn.tasks
-# Remove duplicate import - os is already imported above
-torch.serialization.add_safe_globals([ultralytics.nn.tasks.DetectionModel])
+
+# ADD BOTH SAFE GLOBALS BEFORE LOADING MODEL
+torch.serialization.add_safe_globals([
+    torch.nn.modules.container.Sequential,  # <-- ADDED THIS
+    ultralytics.nn.tasks.DetectionModel
+])
+
 # Download model from Hugging Face if not exists
 if not os.path.exists("best.pt"):
     print("📥 Downloading model from HuggingFace...")
     hf_hub_download(
-        repo_id="safwennnnn/printguard-model",  # ⚠️ CHANGE THIS!
+        repo_id="safwennnnn/printguard-model",
         filename="best.pt",
         local_dir=".",
-        token=os.environ.get("HF_TOKEN")  # set as Render env var
+        token=os.environ.get("HF_TOKEN")
     )
     print("✅ Model downloaded!")
 
