@@ -6,9 +6,10 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from ultralytics import YOLO
 from huggingface_hub import hf_hub_download
-
+import torch
+import ultralytics.nn.tasks
 # Remove duplicate import - os is already imported above
-
+torch.serialization.add_safe_globals([ultralytics.nn.tasks.DetectionModel])
 # Download model from Hugging Face if not exists
 if not os.path.exists("best.pt"):
     print("📥 Downloading model from HuggingFace...")
