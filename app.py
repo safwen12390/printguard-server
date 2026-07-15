@@ -7,14 +7,13 @@ from flask_cors import CORS
 from ultralytics import YOLO
 from huggingface_hub import hf_hub_download
 import torch
-import torch.nn.modules.container  # <-- ADDED THIS IMPORT
-import ultralytics.nn.tasks
 
-# ADD BOTH SAFE GLOBALS BEFORE LOADING MODEL
-torch.serialization.add_safe_globals([
-    torch.nn.modules.container.Sequential,  # <-- ADDED THIS
-    ultralytics.nn.tasks.DetectionModel
-])
+# Patch torch.load to avoid safe_globals issues
+_original_load = torch.load
+def _patched_load(*args, **kwargs):
+    kwargs['weights_only'] = False
+    return _original_load(*args, **kwargs)
+torch.load = _patched_load
 
 # Download model from Hugging Face if not exists
 if not os.path.exists("best.pt"):
