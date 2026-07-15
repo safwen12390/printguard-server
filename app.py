@@ -5,6 +5,20 @@ import numpy as np
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 from ultralytics import YOLO
+from huggingface_hub import hf_hub_download
+
+# Remove duplicate import - os is already imported above
+
+# Download model from Hugging Face if not exists
+if not os.path.exists("best.pt"):
+    print("📥 Downloading model from HuggingFace...")
+    hf_hub_download(
+        repo_id="safwennnnn/printguard-model",  # ⚠️ CHANGE THIS!
+        filename="best.pt",
+        local_dir=".",
+        token=os.environ.get("HF_TOKEN")  # set as Render env var
+    )
+    print("✅ Model downloaded!")
 
 app = Flask(__name__)
 CORS(app)
